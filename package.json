@@ -1,0 +1,26 @@
+{
+  "name": "next.js-relay-example",
+  "version": "1.0.0",
+  "repository": "git@github.com:Gregoor/next.js-relay-example.git",
+  "author": "Gregor <gregorwbr@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "isomorphic-relay": "^0.7.4",
+    "next": "2.0.0-beta.17",
+    "react": "^15.4.2",
+    "react-relay": "^0.10.0"
+  },
+  "devDependencies": {
+    "babel-plugin-react-relay": "^0.9.3-3"
+  },
+  "graphql": {
+    "request": {
+      "url": "https://api.graph.cool/relay/v1/cixzyedcu0oii0144ltsfckbl"
+    }
+  }
+}

@@ -11,8 +11,9 @@
   },
   "dependencies": {
     "isomorphic-relay": "^0.7.4",
-    "next": "2.0.0-beta.17",
+    "next": "2.0.0-beta.32",
     "react": "^15.4.2",
+    "react-dom": "^15.4.2",
     "react-relay": "^0.10.0"
   },
   "devDependencies": {

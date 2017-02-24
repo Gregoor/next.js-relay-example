@@ -1,6 +1,5 @@
 import React from 'react';
-import Document, { Head, Main, NextScript } from 'next/document';
-import Relay from 'react-relay';
+import Relay, {getQueries} from 'react-relay';
 import IsomorphicRelay from 'isomorphic-relay';
 
 
@@ -43,36 +42,24 @@ const rootContainerProps = {
   Container: HelloWorld
 };
 
+
+
 const isServer = typeof window == 'undefined';
 
-export default class extends Document {
+export default class extends React.Component {
 
   static async getInitialProps() {
-    const {data, props} = await IsomorphicRelay.prepareData(rootContainerProps, networkLayer);
-    return {...props, preloadedData: data};
+    return IsomorphicRelay.prepareData(rootContainerProps, networkLayer);
   }
 
   render() {
-    let {props} = this;
-    if (!isServer) {
-      const node = window.document.getElementById('preloadedData');
-      if (node) {
-        const data = JSON.parse(node.textContent);
-        IsomorphicRelay.injectPreparedData(environment, data);
-        // props = IsomorphicRelay.prepareInitialRender({...rootContainerProps, environment}).props;
-      }
+    const {props, data} = this.props;
+    if (isServer) {
+      return <IsomorphicRelay.Renderer {...rootContainerProps} {...props} />;
+    } else {
+      IsomorphicRelay.injectPreparedData(environment, data);
+      return <Relay.Renderer {...{environment}} {...rootContainerProps} />
     }
-    return (
-      <html>
-        <Head/>
-        <body>
-          <IsomorphicRelay.Renderer {...props}/>
-          <Main/>
-          <NextScript/>
-          <div id="preloadedData">{JSON.stringify(this.props.preloadedData)}</div>
-        </body>
-      </html>
-    );
   }
 
 }

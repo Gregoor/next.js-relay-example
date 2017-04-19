@@ -1,3 +1,4 @@
 node_modules
+__generated__
 npm-debug.log*
 .next

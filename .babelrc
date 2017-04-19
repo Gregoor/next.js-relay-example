@@ -1,4 +1,6 @@
 {
-  "presets": ["next/babel"],
-  "plugins": ["react-relay"]
+  "plugins": [
+    ["relay", {"schema": "./schema.graphql"}]
+  ],
+  "presets": ["next/babel"]
 }

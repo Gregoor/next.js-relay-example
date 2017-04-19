@@ -1,0 +1,550 @@
+# The `BigDecimal` scalar type represents signed fractional values with arbitrary precision.
+scalar BigDecimal
+
+# The `BigInt` scalar type represents non-fractional signed whole numeric values. BigInt can represent arbitrary big values.
+scalar BigInt
+
+input CreateFile {
+  name: String!
+}
+
+input CreateFileInput {
+  name: String!
+  clientMutationId: String!
+}
+
+type CreateFilePayload {
+  viewer: Viewer!
+  clientMutationId: String!
+  file: File
+  edge: FileEdge
+}
+
+input CreateHelloTarget {
+  name: String!
+}
+
+input CreateHelloTargetInput {
+  name: String!
+  clientMutationId: String!
+}
+
+type CreateHelloTargetPayload {
+  viewer: Viewer!
+  clientMutationId: String!
+  helloTarget: HelloTarget
+  edge: HelloTargetEdge
+}
+
+# If authentication was successful the payload contains the user and a token. If unsuccessful this payload is null.
+type CreateUserPayload {
+  user: User
+  clientMutationId: String
+  viewer: Viewer!
+}
+
+scalar DateTime
+
+input DeleteFileInput {
+  id: ID!
+  clientMutationId: String!
+}
+
+type DeleteFilePayload {
+  viewer: Viewer!
+  clientMutationId: String!
+  file: File
+  edge: FileEdge
+  deletedId: ID
+}
+
+input DeleteHelloTargetInput {
+  id: ID!
+  clientMutationId: String!
+}
+
+type DeleteHelloTargetPayload {
+  viewer: Viewer!
+  clientMutationId: String!
+  helloTarget: HelloTarget
+  edge: HelloTargetEdge
+  deletedId: ID
+}
+
+input DeleteUserInput {
+  id: ID!
+  clientMutationId: String!
+}
+
+type DeleteUserPayload {
+  viewer: Viewer!
+  clientMutationId: String!
+  user: User
+  edge: UserEdge
+  deletedId: ID
+}
+
+type File implements Node {
+  contentType: String!
+  createdAt: DateTime
+  id: ID!
+  name: String!
+  secret: String!
+  size: Int!
+  updatedAt: DateTime
+  url: String!
+}
+
+# A connection to a list of items.
+type FileConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [FileEdge]
+
+  # Count of filtered result set without considering pagination arguments
+  count: Int!
+}
+
+# An edge in a connection.
+type FileEdge {
+  # The item at the end of the edge.
+  node: File!
+
+  # A cursor for use in pagination.
+  cursor: String!
+}
+
+input FileFilter {
+  AND: [FileFilter!]
+  OR: [FileFilter!]
+  contentType: String
+  contentType_not: String
+  contentType_in: [String!]
+  contentType_not_in: [String!]
+  contentType_lt: String
+  contentType_lte: String
+  contentType_gt: String
+  contentType_gte: String
+  contentType_contains: String
+  contentType_not_contains: String
+  contentType_starts_with: String
+  contentType_not_starts_with: String
+  contentType_ends_with: String
+  contentType_not_ends_with: String
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  secret: String
+  secret_not: String
+  secret_in: [String!]
+  secret_not_in: [String!]
+  secret_lt: String
+  secret_lte: String
+  secret_gt: String
+  secret_gte: String
+  secret_contains: String
+  secret_not_contains: String
+  secret_starts_with: String
+  secret_not_starts_with: String
+  secret_ends_with: String
+  secret_not_ends_with: String
+  size: Int
+  size_not: Int
+  size_in: [Int!]
+  size_not_in: [Int!]
+  size_lt: Int
+  size_lte: Int
+  size_gt: Int
+  size_gte: Int
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  url: String
+  url_not: String
+  url_in: [String!]
+  url_not_in: [String!]
+  url_lt: String
+  url_lte: String
+  url_gt: String
+  url_gte: String
+  url_contains: String
+  url_not_contains: String
+  url_starts_with: String
+  url_not_starts_with: String
+  url_ends_with: String
+  url_not_ends_with: String
+}
+
+enum FileOrderBy {
+  contentType_ASC
+  contentType_DESC
+  createdAt_ASC
+  createdAt_DESC
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  secret_ASC
+  secret_DESC
+  size_ASC
+  size_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  url_ASC
+  url_DESC
+}
+
+type HelloTarget implements Node {
+  createdAt: DateTime
+  id: ID!
+  name: String!
+  updatedAt: DateTime
+}
+
+# A connection to a list of items.
+type HelloTargetConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [HelloTargetEdge]
+
+  # Count of filtered result set without considering pagination arguments
+  count: Int!
+}
+
+# An edge in a connection.
+type HelloTargetEdge {
+  # The item at the end of the edge.
+  node: HelloTarget!
+
+  # A cursor for use in pagination.
+  cursor: String!
+}
+
+input HelloTargetFilter {
+  AND: [HelloTargetFilter!]
+  OR: [HelloTargetFilter!]
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+}
+
+enum HelloTargetOrderBy {
+  createdAt_ASC
+  createdAt_DESC
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+# The `Long` scalar type represents non-fractional signed whole numeric values.
+# Long can represent values between -(2^63) and 2^63 - 1.
+scalar Long
+
+type Mutation {
+  createFile(input: CreateFileInput!): CreateFilePayload
+  createHelloTarget(input: CreateHelloTargetInput!): CreateHelloTargetPayload
+  updateFile(input: UpdateFileInput!): UpdateFilePayload
+  updateHelloTarget(input: UpdateHelloTargetInput!): UpdateHelloTargetPayload
+  updateUser(input: UpdateUserInput!): UpdateUserPayload
+  updateOrCreateFile(input: UpdateOrCreateFileInput!): UpdateOrCreateFilePayload
+  updateOrCreateHelloTarget(input: UpdateOrCreateHelloTargetInput!): UpdateOrCreateHelloTargetPayload
+  updateOrCreateUser(input: UpdateOrCreateUserInput!): UpdateOrCreateUserPayload
+  deleteFile(input: DeleteFileInput!): DeleteFilePayload
+  deleteHelloTarget(input: DeleteHelloTargetInput!): DeleteHelloTargetPayload
+  deleteUser(input: DeleteUserInput!): DeleteUserPayload
+  createUser(input: SignupUserInput!): CreateUserPayload!
+}
+
+# An object with an ID
+interface Node {
+  # The id of the object.
+  id: ID!
+}
+
+# Information about pagination in a connection.
+type PageInfo {
+  # When paginating forwards, are there more items?
+  hasNextPage: Boolean!
+
+  # When paginating backwards, are there more items?
+  hasPreviousPage: Boolean!
+
+  # When paginating backwards, the cursor to continue.
+  startCursor: String
+
+  # When paginating forwards, the cursor to continue.
+  endCursor: String
+}
+
+type Query {
+  viewer: Viewer!
+
+  # Fetches an object given its ID
+  node(
+    # The ID of an object
+    id: ID!
+  ): Node
+}
+
+input SignupUserInput {
+  clientMutationId: String!
+}
+
+input UpdateFile {
+  id: ID!
+  name: String
+}
+
+input UpdateFileInput {
+  id: ID!
+  name: String
+  clientMutationId: String!
+}
+
+type UpdateFilePayload {
+  viewer: Viewer!
+  clientMutationId: String!
+  file: File
+  edge: FileEdge
+}
+
+input UpdateHelloTarget {
+  id: ID!
+  name: String
+}
+
+input UpdateHelloTargetInput {
+  id: ID!
+  name: String
+  clientMutationId: String!
+}
+
+type UpdateHelloTargetPayload {
+  viewer: Viewer!
+  clientMutationId: String!
+  helloTarget: HelloTarget
+  edge: HelloTargetEdge
+}
+
+input UpdateOrCreateFileInput {
+  update: UpdateFile!
+  create: CreateFile!
+  clientMutationId: String!
+}
+
+type UpdateOrCreateFilePayload {
+  viewer: Viewer!
+  clientMutationId: String!
+  file: File
+  edge: FileEdge
+}
+
+input UpdateOrCreateHelloTargetInput {
+  update: UpdateHelloTarget!
+  create: CreateHelloTarget!
+  clientMutationId: String!
+}
+
+type UpdateOrCreateHelloTargetPayload {
+  viewer: Viewer!
+  clientMutationId: String!
+  helloTarget: HelloTarget
+  edge: HelloTargetEdge
+}
+
+input UpdateOrCreateUserInput {
+  update: UpdateUser!
+  clientMutationId: String!
+}
+
+type UpdateOrCreateUserPayload {
+  viewer: Viewer!
+  clientMutationId: String!
+  user: User
+  edge: UserEdge
+}
+
+input UpdateUser {
+  id: ID!
+}
+
+input UpdateUserInput {
+  id: ID!
+  clientMutationId: String!
+}
+
+type UpdateUserPayload {
+  viewer: Viewer!
+  clientMutationId: String!
+  user: User
+  edge: UserEdge
+}
+
+type User implements Node {
+  createdAt: DateTime
+  id: ID!
+  updatedAt: DateTime
+}
+
+# A connection to a list of items.
+type UserConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [UserEdge]
+
+  # Count of filtered result set without considering pagination arguments
+  count: Int!
+}
+
+# An edge in a connection.
+type UserEdge {
+  # The item at the end of the edge.
+  node: User!
+
+  # A cursor for use in pagination.
+  cursor: String!
+}
+
+input UserFilter {
+  AND: [UserFilter!]
+  OR: [UserFilter!]
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+}
+
+enum UserOrderBy {
+  createdAt_ASC
+  createdAt_DESC
+  id_ASC
+  id_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+# This is the famous Relay viewer object
+type Viewer {
+  allFiles(filter: FileFilter, orderBy: FileOrderBy, skip: Int, after: String, before: String, first: Int, last: Int): FileConnection!
+  allHelloTargets(filter: HelloTargetFilter, orderBy: HelloTargetOrderBy, skip: Int, after: String, before: String, first: Int, last: Int): HelloTargetConnection!
+  allUsers(filter: UserFilter, orderBy: UserOrderBy, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
+  user: User
+  File(id: ID, secret: String, url: String): File
+  HelloTarget(id: ID): HelloTarget
+  User(id: ID): User
+  id: ID!
+}

@@ -1,65 +1,30 @@
 import React from 'react';
-import Relay, {getQueries} from 'react-relay';
-import IsomorphicRelay from 'isomorphic-relay';
+import {graphql, QueryRenderer} from 'react-relay';
+import {Environment, Network} from 'relay-runtime';
 
+import HelloWorld from './HelloWorld';
 
-const networkLayer = new Relay.DefaultNetworkLayer(
-  'https://api.graph.cool/relay/v1/cixzyedcu0oii0144ltsfckbl'
-);
-const environment = new Relay.Environment();
-environment.injectNetworkLayer(networkLayer);
+const network = Network.create((operation, variables) => (
+  fetch('https://api.graph.cool/relay/v1/cixzyedcu0oii0144ltsfckbl', {
+    method: 'POST',
+    body: JSON.stringify({query: operation.text, variables})
+  }).then(response => response.json())
+));
+const environment = new Environment({network});
 
-const HelloWorld = Relay.createContainer(
-  ({viewer}) => (
-    <div>
-      {viewer.allHelloTargets.edges.map(({node}) => (
-        <h1 key={node.id}>Hello {node.name}</h1>
-      ))}
-    </div>
-  ),
-  {fragments: {
-    viewer: () => Relay.QL`
-      fragment on Viewer {
-        allHelloTargets(first: 1) {
-          edges {
-            node {
-              id
-              name
-            }
-          }
+export default () => (
+  <QueryRenderer
+    environment={environment}
+    query={graphql`
+      query indexQuery {
+        viewer {
+          ...HelloWorld_viewer
         }
       }
-    `
-  }}
-);
-
-const rootContainerProps = {
-  queryConfig: {
-    name: 'ViewerRoute',
-    queries: {viewer: () => Relay.QL`query { viewer }`},
-    params: {}
-  },
-  Container: HelloWorld
-};
-
-
-
-const isServer = typeof window == 'undefined';
-
-export default class extends React.Component {
-
-  static async getInitialProps() {
-    return IsomorphicRelay.prepareData(rootContainerProps, networkLayer);
-  }
-
-  render() {
-    const {props, data} = this.props;
-    if (isServer) {
-      return <IsomorphicRelay.Renderer {...rootContainerProps} {...props} />;
-    } else {
-      IsomorphicRelay.injectPreparedData(environment, data);
-      return <Relay.Renderer {...{environment}} {...rootContainerProps} />
+    `}
+    render={({error, props}) => error
+      ? <div>{JSON.stringify(error)}</div>
+      : <HelloWorld viewer={props.viewer}/>
     }
-  }
-
-}
+  />
+);

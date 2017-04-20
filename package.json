@@ -11,6 +11,7 @@
     "relay": "relay-compiler --src ./pages --schema ./schema.graphql"
   },
   "dependencies": {
+    "isomorphic-fetch": "^2.2.1",
     "next": "2.1.1",
     "react": "15.5.4",
     "react-dom": "15.5.4",

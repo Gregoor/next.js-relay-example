@@ -12,14 +12,14 @@
   },
   "dependencies": {
     "isomorphic-fetch": "^2.2.1",
-    "next": "2.1.1",
-    "react": "15.5.4",
-    "react-dom": "15.5.4",
-    "react-relay": "dev",
-    "relay-runtime": "dev"
+    "next": "beta",
+    "react": "15.6.1",
+    "react-dom": "15.6.1",
+    "react-relay": "1.1.0",
+    "relay-runtime": "1.1.0"
   },
   "devDependencies": {
-    "babel-plugin-relay": "dev",
-    "relay-compiler": "dev"
+    "babel-plugin-relay": "1.1.0",
+    "relay-compiler": "1.1.0"
   }
 }

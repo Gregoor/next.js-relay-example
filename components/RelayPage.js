@@ -1,8 +1,27 @@
 import React, {Component} from 'react';
-import environment from '../lib/relayEnvironment';
+import {
+  createOperationSelector, getOperation, Environment, Network, RecordSource, Store
+} from 'relay-runtime';
+import QueryLookupRenderer from 'relay-query-lookup-renderer';
 import 'isomorphic-fetch';
 
-export default (query, ComposedComponent) => class RelayPage extends Component {
+const network = Network.create((operation, variables) => (
+  fetch('https://api.graph.cool/relay/v1/cixzyedcu0oii0144ltsfckbl', {
+    method: 'POST',
+    body: JSON.stringify({query: operation.text, variables}),
+    headers: {'Content-Type': 'application/json'}
+  })
+    .then((response) => response.json())
+));
+
+const store = new Store(new RecordSource(
+  typeof window !== 'undefined' && window.__NEXT_DATA__
+    ? window.__NEXT_DATA__.props.recordSource
+    : {}
+));
+const environment = new Environment({network, store});
+
+export default (ComposedComponent, query, variables = {}) => class RelayPage extends Component {
 
   static async getInitialProps(ctx) {
     const {req} = ctx;
@@ -11,34 +30,35 @@ export default (query, ComposedComponent) => class RelayPage extends Component {
     let pageProps = {};
 
     if (query) {
-      const {
-        createOperationSelector,
-        getOperation,
-      } = environment.unstable_internal;
-      const operation = createOperationSelector(getOperation(query));
-      const result = await new Promise((resolve) => environment.streamQuery({
-        operation,
-        onNext: () => resolve(environment.lookup(operation.fragment).data),
-      }));
+      const operation = createOperationSelector(getOperation(query), variables);
+      environment.retain(operation.root);
+      await new Promise((resolve) => environment.sendQuery({operation, onCompleted: resolve}));
 
-      pageProps = {...result};
-
-      if (isServer) pageProps.recordSource = environment.getStore().getSource().toJSON();
+      if (isServer) {
+        pageProps = {...pageProps, recordSource: environment.getStore().getSource().toJSON()};
+      }
     }
 
     if (ComposedComponent.getInitialProps) {
-      pageProps = {...await ComposedComponent.getInitialProps(ctx)};
+      pageProps = {...pageProps, ...await ComposedComponent.getInitialProps(ctx)};
     }
 
-    return {
-      ...pageProps,
-      // initialState: store.getState(),
-      isServer
-    };
+    return {...pageProps, isServer};
   }
 
   render() {
-    return <ComposedComponent {...this.props}/>;
+    return (
+      <QueryLookupRenderer
+        lookup
+        environment={environment}
+        query={query}
+        variables={variables}
+        render={({error, props}) => error || !props
+          ? <div>{JSON.stringify(error)}</div>
+          : <ComposedComponent {...props}/>
+        }
+      />
+    );
   }
 
 };

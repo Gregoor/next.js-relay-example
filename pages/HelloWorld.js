@@ -2,7 +2,7 @@ import React from 'react';
 import {createFragmentContainer, graphql} from 'react-relay';
 
 export default createFragmentContainer(
-  ({viewer}) => (
+  ({viewer}) => <span>{JSON.stringify(viewer)}</span> || (
     <div>
       {viewer.allHelloTargets.edges.map(({node}) => (
         <h1 key={node.id}>Hello {node.name}</h1>

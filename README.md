@@ -1,4 +1,3 @@
-# next.js-relay-example
-Use next.js (https://github.com/zeit/next.js) with Relay (https://github.com/facebook/relay)
+# Not maintained
 
-**DOES NOT YET WORK**
+A working example can be found at https://github.com/petrvlcek/next.js/tree/with-relay-modern/examples/with-relay-modern
